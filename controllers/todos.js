@@ -54,3 +54,27 @@ async function details(req, res) {
 
     }
 }
+
+async function addTodo(req, res) {
+    try {
+        const foundUser = await User.findById(req.user._id);
+
+        if (!foundUser) res.status(404).json({ error: 'User not found' });
+
+        const newTodo = new Todo({
+            todo_description: req.body.todo_description,
+            todo_responsible: req.body.todo_responsible,
+            todo_priority: req.body.todo_priority,
+            todo_completed: req.body.todo_completed
+        })
+
+        await newTodo.save();
+        foundUser.todos.push(newTodo._id);
+        await foundUser.save();
+
+        res.status(200).json({ message: 'Todo added successfully' });
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to add new todo' });
+    }
+}
