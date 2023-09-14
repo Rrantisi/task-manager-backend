@@ -78,3 +78,21 @@ async function addTodo(req, res) {
         res.status(500).json({ error: 'Failed to add new todo' });
     }
 }
+
+async function updateTodo(req, res) {
+    try {
+        const id = req.params.id;
+        const todo = await Todo.findById(id);
+        todo.todo_description = req.body.todo_description;
+        todo.todo_responsible = req.body.todo_responsible;
+        todo.todo_priority = req.body.todo_priority;
+        todo.todo_completed = req.body.todo_completed;
+        const updatedTodo = await todo.save();
+        if(!todo) res.status(404).json({ error: 'Todo not found' });
+        res.json(updatedTodo);
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
