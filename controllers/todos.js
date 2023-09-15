@@ -96,3 +96,21 @@ async function updateTodo(req, res) {
     }
 }
 
+async function deleteTodo(req, res) {
+    try {
+        const user = await User.findById(req.user._id).populate('todos');
+        const foundTodos = user.todos;
+        foundTodos.forEach(todo => {
+            if(todo._id.toString() === req.params.id) {
+                user.todos.pull(todo);
+            } else {
+                return res.status(404).json({ error: 'Todo not found' });
+            }
+        })
+        const deletedTodo = await user.save();
+        res.json(deletedTodo);
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
