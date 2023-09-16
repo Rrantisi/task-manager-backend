@@ -22,3 +22,13 @@ async function login(req, res) {
     }
 }
 
+async function create(req, res) {
+    try {
+        const user = await User.create(req.body);
+        const token = createJWT(user);
+        res.json(token);
+    } catch(error) {
+        console.error(error);
+        res.status(400).json(error);
+    }
+}
