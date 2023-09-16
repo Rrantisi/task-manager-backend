@@ -32,3 +32,8 @@ async function create(req, res) {
         res.status(400).json(error);
     }
 }
+
+function createJWT(user) {
+    return jwt.sign({ user }, process.env.SECRET, { expiresIn: '24h' });
+}
+
