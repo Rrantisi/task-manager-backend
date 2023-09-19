@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'build')))
 app.use(require('./config/checkToken'));
 
 // API routes come before catch all routes
-app.use('/todos', require('./routes/api/todos'));
+app.use('/todos', require('./routes/todos'));
 app.use('/api/users', require('./routes/api/users'));
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
