@@ -28,7 +28,6 @@ async function index(req, res) {
 async function details(req, res) {
     try {
         const id = req.params.id;
-        // const user = await User.findById(req.query.userId).populate('todos');
         const user = await User.findById(req.user._id).populate('todos');
         const foundTodos = user.todos;
         let todoId, todoInfo;
