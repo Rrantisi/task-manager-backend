@@ -6,12 +6,12 @@ const ensureLoggedIn = require('../config/ensureLoggedIn');
 
 router.get('/', ensureLoggedIn, todosCtrl.index);
 
-router.get('/:id', ensureLoggedIn, todosCtrl.details);
+router.get('/:id', todosCtrl.details);
 
 router.post('/add', ensureLoggedIn, todosCtrl.addTodo);
 
-router.post('/update/:id', ensureLoggedIn, todosCtrl.updateTodo);
+router.post('/update/:id', todosCtrl.updateTodo);
 
-router.delete('/delete/:id', ensureLoggedIn, todosCtrl.deleteTodo);
+router.delete('/delete/:id', todosCtrl.deleteTodo);
 
 module.exports = router;
