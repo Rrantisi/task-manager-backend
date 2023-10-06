@@ -95,20 +95,49 @@ async function updateTodo(req, res) {
     }
 }
 
+// async function deleteTodo(req, res) {
+//     try {
+//         const user = await User.findById(req.user._id).populate('todos');
+//         const foundTodos = user.todos;
+//         foundTodos.forEach(todo => {
+//             if(todo._id.toString() === req.params.id) {
+//                 user.todos.pull(todo);
+//             } else {
+//                 return res.status(404).json({ error: 'Todo not found' });
+//             }
+//         })
+//         const deletedTodo = await user.save();
+//         res.json(deletedTodo);
+//     } catch(error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// }
+
 async function deleteTodo(req, res) {
     try {
         const user = await User.findById(req.user._id).populate('todos');
         const foundTodos = user.todos;
+
+        // Use a flag to track if the todo was found
+        let todoFound = false;
+
         foundTodos.forEach(todo => {
-            if(todo._id.toString() === req.params.id) {
+            if (todo._id.toString() === req.params.id) {
+                // Remove the todo from the user's todos
                 user.todos.pull(todo);
-            } else {
-                return res.status(404).json({ error: 'Todo not found' });
+                todoFound = true;
             }
-        })
+        });
+
+        // Check if the todo was found
+        if (!todoFound) {
+            return res.status(404).json({ error: 'Todo not found' });
+        }
+
         const deletedTodo = await user.save();
         res.json(deletedTodo);
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
