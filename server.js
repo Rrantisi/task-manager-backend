@@ -17,7 +17,6 @@ require('./config/database');
 app.use(cors());
 
 // mount middleware
-// before MERN we used urlencoded to serve data that comes from forms-> with MERN we use express.json()
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')))
